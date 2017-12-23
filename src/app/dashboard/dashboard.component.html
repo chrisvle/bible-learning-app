@@ -1,3 +1,39 @@
-<p>
-  dashboard works!
-</p>
+<div class="container-fluid">
+  <div class="row">
+    <!-- Left Panel -->
+    <div class="d-flex flex-column jumbotron col-sm-2 left-panel">
+      <h3 class="mb-5">Game Settings</h3>
+      <div class="mb-5">
+        <h5 class="mb-3">Game Type</h5>
+        <div *ngIf="!gameType">You haven't selected a game type yet.</div>
+      </div>
+      <div class="mb-5">
+        <h5 class="mb-3">Old or New?</h5>
+        <div *ngIf="!oldOrNew">You haven't selected Old or New Testament yet.</div>
+      </div>
+      <div class="mb-5">
+        <h5 class="mb-3">Book</h5>
+        <div *ngIf="!bibleBook">You haven't selected a book of the Bible yet.</div>
+      </div>
+      <div class="mt-auto">
+        <button class="btn btn-lg btn-primary" [disabled]="!gameType || !bibleBook || !oldOrNew">Play</button>
+        <button class="btn btn-lg btn-danger">Reset</button>
+      </div>
+    </div>
+    <!-- Right Panel -->
+    <div class="col-sm-10 pl-4 pt-5">
+      <h4 class="mb-4">Game Types</h4>
+      <div class="row">
+        <div class="col-sm-6" *ngFor="let gameType of gameTypes">
+          <div class="card">
+            <div class="card-block">
+              <h5 class="card-title">{{gameType.type}}</h5>
+              <p class="card-text">{{gameType.description}}</p>
+              <button class="btn btn-primary">Select</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
