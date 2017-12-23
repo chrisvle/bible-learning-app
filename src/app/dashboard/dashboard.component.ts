@@ -12,16 +12,35 @@ export class DashboardComponent {
   gameTypes = [
     {
       id: 0,
-      type: 'Guess the Chapter',
+      type: 'Chapter Only',
       description: 'Pick a book. Get a random verse. Guess the chapter.'
     },
     {
       id: 1,
-      type: 'Guess the Chapter and the Verse',
+      type: 'Chapter and Verse',
       description: 'Pick a book. Get a random verse. Guess the chapter and the verse.'
+    },
+    {
+      id: 2,
+      type: 'Fill in the Blank',
+      description: 'Pick a book. Get a random verse. Fill in the Blank.'
+    },
+    {
+      id: 3,
+      type: 'Matching',
+      description: 'Pick a book. Get some random verses. Match the verse with the right chapter.'
     }
   ];
 
   constructor() { }
 
+  setGameType(id: number): void {
+    this.gameType = this.gameTypes[id].type;
+  }
+
+  reset(): void {
+    this.gameType = null;
+    this.oldOrNew = null;
+    this.bibleBook = null;
+  }
 }
