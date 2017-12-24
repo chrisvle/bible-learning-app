@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
     <!-- Left Panel -->
-    <div class="d-flex flex-column jumbotron col-md-4 col-lg-3 left-panel">
+    <div class="d-flex flex-column jumbotron col-md-5 col-lg-3 left-panel">
       <h3 class="mb-5">Game Settings</h3>
       <div class="mb-5">
         <h5 class="mb-3">Game Type</h5>
@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="mb-5">
-        <h5 class="mb-3">Old or New?</h5>
+        <h5 class="mb-3">Old or New</h5>
         <div *ngIf="!oldOrNew">You haven't selected Old or New yet.</div>
       </div>
       <div class="mb-5">
@@ -25,17 +25,17 @@
       </div>
     </div>
     <!-- Right Panel -->
-    <div class="col-md-8 col-lg-9 pl-4">
+    <div class="col-md-7 col-lg-9 pl-4">
       <!-- Game Type -->
-      <div *ngIf="!gameType" class="scrollable">
+      <div *ngIf="!gameType">
         <h4 class="mb-4">Game Types</h4>
         <div class="row">
           <div class="col-lg-6 mb-3" *ngFor="let gameType of gameTypes">
             <div class="card">
-              <div class="card-block">
+              <div class="d-flex flex-column card-block">
                 <h5 class="card-title">{{gameType.type}}</h5>
                 <p class="card-text">{{gameType.description}}</p>
-                <button class="btn btn-primary" (click)="setGameType(gameType.id)">Select</button>
+                <button class="btn btn-primary w-25 mt-auto" (click)="setGameType(gameType.id)">Select</button>
               </div>
             </div>
           </div>

@@ -13,22 +13,22 @@ export class DashboardComponent {
     {
       id: 0,
       type: 'Chapter Only',
-      description: 'Pick a book. Get a random verse. Guess the chapter.'
+      description: 'Get a random verse. Guess the chapter.'
     },
     {
       id: 1,
       type: 'Chapter and Verse',
-      description: 'Pick a book. Get a random verse. Guess the chapter and the verse.'
+      description: 'Get a random verse. Guess the chapter and the verse.'
     },
     {
       id: 2,
       type: 'Fill in the Blank',
-      description: 'Pick a book. Get a random verse. Fill in the Blank.'
+      description: 'Get a random verse. Fill in the Blank.'
     },
     {
       id: 3,
       type: 'Matching',
-      description: 'Pick a book. Get some random verses. Match the verse with the right chapter.'
+      description: 'Get some random verses. Match the verse with the right chapter.'
     }
   ];
 
