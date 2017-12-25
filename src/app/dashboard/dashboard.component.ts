@@ -15,12 +15,12 @@ export class DashboardComponent {
   newTestamentBooks = [];
 
   constructor(
-    private bibleServie: BibleService,
+    private bibleService: BibleService,
     private dashboardService: DashboardService
   ) {
     this.gameTypes = dashboardService.getGameTypes();
-    this.oldTestamentBooks = bibleServie.getOldTestamentBooks();
-    this.newTestamentBooks = bibleServie.getNewTestamentBooks();
+    this.oldTestamentBooks = bibleService.getOldTestamentBooks();
+    this.newTestamentBooks = bibleService.getNewTestamentBooks();
   }
 
   setGameType(id: number): void {
