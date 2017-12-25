@@ -273,7 +273,7 @@ export class BibleService {
 
   constructor() { }
 
-  getBibleBooks() {
+  getAllBibleBooks() {
     return this.bibleBooks;
   }
 
