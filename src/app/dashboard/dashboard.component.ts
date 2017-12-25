@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BibleService } from '../shared/bible.service';
 import { DashboardService } from './dashboard.service';
 
 @Component({
@@ -10,16 +11,23 @@ export class DashboardComponent {
   oldOrNew: string;
   bibleBook: string;
   gameTypes = [];
+  oldTestamentBooks = [];
+  newTestamentBooks = [];
 
-  constructor(private dashboardService: DashboardService) {
+  constructor(
+    private bibleServie: BibleService,
+    private dashboardService: DashboardService
+  ) {
     this.gameTypes = dashboardService.getGameTypes();
+    this.oldTestamentBooks = bibleServie.getOldTestamentBooks();
+    this.newTestamentBooks = bibleServie.getNewTestamentBooks();
   }
 
   setGameType(id: number): void {
     this.gameType = this.gameTypes[id].type;
   }
 
-  reset(): void {
+  resetAll(): void {
     this.gameType = null;
     this.oldOrNew = null;
     this.bibleBook = null;

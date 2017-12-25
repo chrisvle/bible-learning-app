@@ -1,3 +1,18 @@
-.card {
-  min-height: 11rem;
+.left-panel {
+  height: 91vh;
 }
+
+.right-content {
+  max-height: 85vh;
+  overflow-y: scroll;
+}
+
+.big-card {
+  min-height: 19vh;
+}
+
+.small-card {
+  min-height: 12vh;
+}
+
+

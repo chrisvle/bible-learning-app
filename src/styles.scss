@@ -1,1 +1,7 @@
+$break-small: 767px;
 
+@media screen and (min-width: $break-small) {
+  body {
+    overflow-y: hidden;
+  }
+}

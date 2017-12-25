@@ -5,23 +5,31 @@
       <h3 class="mb-5">Game Settings</h3>
       <div class="mb-5">
         <h5 class="mb-3">Game Type</h5>
-        <div *ngIf="!gameType">You haven't selected a game type yet.</div>
+        <div *ngIf="!gameType"><em>You haven't selected a game type yet.</em></div>
         <div *ngIf="gameType">
           You have selected: 
-          <div>{{this.gameType}}</div>
+          <div>{{gameType}}</div>
         </div>
       </div>
       <div class="mb-5">
         <h5 class="mb-3">Old or New</h5>
-        <div *ngIf="!oldOrNew">You haven't selected Old or New yet.</div>
+        <div *ngIf="!oldOrNew"><em>You haven't selected Old or New yet.</em></div>
+        <div *ngIf="oldOrNew">
+          You have selected: 
+          <div>{{oldOrNew}}</div>
+        </div>
       </div>
       <div class="mb-5">
         <h5 class="mb-3">Book</h5>
-        <div *ngIf="!bibleBook">You haven't selected a book of the Bible yet.</div>
+        <div *ngIf="!bibleBook"><em>You haven't selected a book of the Bible yet.</em></div>
+        <div *ngIf="bibleBook">
+          You have selected:
+          <div>{{bibleBook}}</div>
+        </div>
       </div>
       <div class="mt-auto">
-        <button class="btn btn-lg btn-primary col mb-3" [disabled]="!gameType || !bibleBook || !oldOrNew">Play</button>
-        <button class="btn btn-lg btn-danger col" (click)="reset()">Reset</button>
+        <!-- <button class="btn btn-lg btn-primary col mb-3" [disabled]="!gameType || !bibleBook || !oldOrNew">Play</button> -->
+        <button class="btn btn-lg btn-danger col" (click)="resetAll()">Reset All</button>
       </div>
     </div>
     <!-- Right Panel -->
@@ -31,7 +39,7 @@
         <h4 class="mb-4">Game Types</h4>
         <div class="row">
           <div class="col-lg-6 mb-3" *ngFor="let gameType of gameTypes">
-            <div class="card">
+            <div class="card big-card">
               <div class="d-flex flex-column card-block">
                 <h5 class="card-title">{{gameType.type}}</h5>
                 <p class="card-text">{{gameType.description}}</p>
@@ -42,8 +50,67 @@
         </div>
       </div>
       <!-- Old Or New -->
+      <div *ngIf="gameType && !oldOrNew">
+        <h4 class="mb-4">Old Testament or New Testament</h4>
+        <div class="row">
+          <div class="col-lg-6 mb-3">
+            <div class="card big-card">
+              <div class="d-flex flex-column card-block">
+                <h5 class="card-title">Old Testament</h5>
+                <button class="btn btn-primary w-25 mt-auto" (click)="oldOrNew = 'Old Testament'">Select</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 mb-3">
+            <div class="card big-card">
+              <div class="d-flex flex-column card-block">
+                <h5 class="card-title">New Testament</h5>
+                <button class="btn btn-primary w-25 mt-auto" (click)="oldOrNew = 'New Testament'">Select</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- Book of the Bible: OT -->
+      <div *ngIf="oldOrNew === 'Old Testament' && !bibleBook">
+        <h4>Old Testament Books</h4>
+        <div class="right-content">
+          <div class="row">
+              <div class="col-sm-12 col-md-6 col-lg-3 mb-3" *ngFor="let book of oldTestamentBooks">
+                <div class="card small-card">
+                  <div class="d-flex flex-column card-block">
+                    <h6 class="card-title">{{book.name}}</h6>
+                    <button class="btn btn-primary btn-sm mt-auto" (click)="bibleBook = book.name">Select</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
       <!-- Book of the Bible: NT -->
+      <div *ngIf="oldOrNew === 'New Testament' && !bibleBook">
+        <h4>New Testament Books</h4>
+        <div class="right-content">
+          <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-3 mb-3" *ngFor="let book of newTestamentBooks">
+              <div class="card small-card">
+                <div class="d-flex flex-column card-block">
+                  <h6 class="card-title">{{book.name}}</h6>
+                  <button class="btn btn-primary btn-sm mt-auto" (click)="bibleBook = book.name">Select</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Confirmation -->
+      <div *ngIf="bibleBook">
+        <div class="jumbotron">
+          <h3 class="my-5">Please double check your game settings to make sure they are correct.</h3>
+          <h4 class="mb-4">If they are correct, then: </h4>
+          <button class="btn btn-lg btn-primary">Play Now</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
