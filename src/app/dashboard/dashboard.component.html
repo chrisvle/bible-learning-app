@@ -5,26 +5,26 @@
       <h3 class="mb-5">Game Settings</h3>
       <div class="mb-5">
         <h5 class="mb-3">Game Type</h5>
-        <div *ngIf="!gameType"><em>You haven't selected a game type yet.</em></div>
+        <div *ngIf="!gameType" id="noGameTypeText"><em>You haven't selected a game type yet.</em></div>
         <div *ngIf="gameType">
           You have selected: 
-          <div>{{gameType}}</div>
+          <div id="selectedGameType">{{gameType}}</div>
         </div>
       </div>
       <div class="mb-5">
         <h5 class="mb-3">Old or New</h5>
-        <div *ngIf="!oldOrNew"><em>You haven't selected Old or New yet.</em></div>
+        <div *ngIf="!oldOrNew" id="noOldOrNewText"><em>You haven't selected Old or New yet.</em></div>
         <div *ngIf="oldOrNew">
           You have selected: 
-          <div>{{oldOrNew}}</div>
+          <div id="selectedOldOrNew">{{oldOrNew}}</div>
         </div>
       </div>
       <div class="mb-5">
         <h5 class="mb-3">Book</h5>
-        <div *ngIf="!bibleBook"><em>You haven't selected a book of the Bible yet.</em></div>
+        <div *ngIf="!bibleBook" id="noBibleBookText"><em>You haven't selected a book of the Bible yet.</em></div>
         <div *ngIf="bibleBook">
           You have selected:
-          <div>{{bibleBook}}</div>
+          <div id="selectedBibleBook">{{bibleBook}}</div>
         </div>
       </div>
       <div class="mt-auto">
@@ -43,7 +43,7 @@
               <div class="d-flex flex-column card-block">
                 <h5 class="card-title">{{gameType.type}}</h5>
                 <p class="card-text">{{gameType.description}}</p>
-                <button class="btn btn-primary w-25 mt-auto" (click)="setGameType(gameType.id)">Select</button>
+                <button class="btn btn-primary w-25 mt-auto" (click)="setGameType(gameType.id)" id="{{gameType.type.split(' ').join('')}}SelectButton">Select</button>
               </div>
             </div>
           </div>
@@ -57,7 +57,10 @@
             <div class="card big-card">
               <div class="d-flex flex-column card-block">
                 <h5 class="card-title">Old Testament</h5>
-                <button class="btn btn-primary w-25 mt-auto" (click)="oldOrNew = 'Old Testament'">Select</button>
+                <button class="btn btn-primary w-25 mt-auto" id="oldTestamentSelectButton"
+                  (click)="oldOrNew = 'Old Testament'">
+                  Select
+                </button>
               </div>
             </div>
           </div>
@@ -65,7 +68,10 @@
             <div class="card big-card">
               <div class="d-flex flex-column card-block">
                 <h5 class="card-title">New Testament</h5>
-                <button class="btn btn-primary w-25 mt-auto" (click)="oldOrNew = 'New Testament'">Select</button>
+                <button class="btn btn-primary w-25 mt-auto" id="newTestamentSelectButton"
+                  (click)="oldOrNew = 'New Testament'">
+                  Select
+                </button>
               </div>
             </div>
           </div>
@@ -80,7 +86,10 @@
                 <div class="card small-card">
                   <div class="d-flex flex-column card-block">
                     <h6 class="card-title">{{book.name}}</h6>
-                    <button class="btn btn-primary btn-sm mt-auto" (click)="bibleBook = book.name">Select</button>
+                    <button class="btn btn-primary btn-sm mt-auto" id="{{book.name}}SelectButton"
+                      (click)="bibleBook = book.name">
+                      Select
+                    </button>
                   </div>
                 </div>
               </div>
@@ -108,7 +117,7 @@
         <div class="jumbotron">
           <h3 class="my-5">Please double check your game settings to make sure they are correct.</h3>
           <h4 class="mb-4">If they are correct, then: </h4>
-          <button class="btn btn-lg btn-primary">Play Now</button>
+          <button class="btn btn-lg btn-primary" id="playNowButton">Play Now</button>
         </div>
       </div>
     </div>
