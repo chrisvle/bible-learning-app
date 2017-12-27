@@ -3,7 +3,51 @@
     "node_modules/codelyzer"
   ],
   "rules": {
-    "arrow-return-shorthand": true,
+    "ban": [
+      true,
+      [
+        "fdescribe"
+      ],
+      [
+        "fit"
+      ],
+      [
+        "console",
+        "log"
+      ],
+      [
+        "console",
+        "assert"
+      ],
+      [
+        "console",
+        "dir"
+      ],
+      [
+        "console",
+        "error"
+      ],
+      [
+        "console",
+        "info"
+      ],
+      [
+        "console",
+        "time"
+      ],
+      [
+        "console",
+        "timeEnd"
+      ],
+      [
+        "console",
+        "trace"
+      ],
+      [
+        "console",
+        "warn"
+      ]
+    ],
     "callable-types": true,
     "class-name": true,
     "comment-format": [
@@ -43,12 +87,7 @@
     "no-arg": true,
     "no-bitwise": true,
     "no-console": [
-      true,
-      "debug",
-      "info",
-      "time",
-      "timeEnd",
-      "trace"
+      true
     ],
     "no-construct": true,
     "no-debugger": true,
