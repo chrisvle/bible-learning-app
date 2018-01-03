@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
-import { BibleService } from '../shared/bible.service';
+import { BibleService } from '../shared/services/bible.service';
 import { DashboardService } from './dashboard.service';
 
 describe('DashboardComponent', () => {
