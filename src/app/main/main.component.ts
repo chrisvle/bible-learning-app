@@ -1,14 +1,20 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
-export class MainComponent implements OnInit {
+export class MainComponent {
 
-  constructor() { }
+  displayName: string;
 
-  ngOnInit() {
+  constructor(public authService: AuthService) {
+    this.displayName = this.authService.getCurrentUser().displayName;
+    console.log(this.displayName);
   }
 
+  logout() {
+    this.authService.logout();
+  }
 }
