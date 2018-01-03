@@ -11,7 +11,6 @@ export class MainComponent {
 
   constructor(public authService: AuthService) {
     this.displayName = this.authService.getCurrentUser().displayName;
-    console.log(this.displayName);
   }
 
   logout() {
