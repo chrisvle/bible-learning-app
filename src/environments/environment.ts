@@ -4,5 +4,13 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: 'AIzaSyDrWwfZi2599OOob4Ni2UHFMQuszXz8xyM',
+    authDomain: 'bible-learning-app.firebaseapp.com',
+    databaseUrl: 'https://bible-learning-app.firebaseio.com',
+    projectId: 'bible-learning-app',
+    storageBucket: 'bible-learning-app.appspot.com'
+  },
+  restrictedEmailDomain: '@gpmail.org'
 };
