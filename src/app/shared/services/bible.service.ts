@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Testament } from './enums/testament.enum';
+import { Testament } from '../enums/testament.enum';
 
 @Injectable()
 export class BibleService {
