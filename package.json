@@ -10,9 +10,7 @@
     "lint:ts": "ng lint",
     "lint:sass": "sass-lint \"src/**/*.scss\" -v -q",
     "lint": "npm run lint:ts && npm run lint:sass",
-    "e2e": "ng e2e",
-    "prepush": "npm run verify",
-    "verify": "npm run lint && npm test -- --single-run && npm run e2e"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
