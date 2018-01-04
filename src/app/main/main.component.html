@@ -10,10 +10,10 @@
         <a class="nav-link" routerLink="/dashboard">Dashboard</a>
       </li>
     </ul>
-    <span class="navbar-text" *ngIf="displayName">
-      Welcome {{displayName}}
+    <span class="navbar-text" *ngIf="(authService.user$ | async)?.displayName">
+      Welcome {{(authService.user$ | async)?.displayName}}
     </span>
-    <span class="navbar-text ml-2 mr-1" *ngIf="displayName">|</span>
+    <span class="navbar-text ml-2 mr-1" *ngIf="(authService.user$ | async)?.displayName">|</span>
     <ul class="navbar-nav my-2 my-lg-0">
       <li class="nav-item">
         <a class="nav-link" routerLink="/login" (click)="logout()">Log Out</a>

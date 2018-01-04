@@ -13,6 +13,5 @@ export class LoginComponent {
 
   signInWithGoogle() {
     this.authService.signInWithGoogle();
-    this.router.navigate(['/dashboard']);
   }
 }

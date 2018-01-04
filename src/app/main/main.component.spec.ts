@@ -7,11 +7,7 @@ describe('MainComponent', () => {
   let component: MainComponent;
   let fixture: ComponentFixture<MainComponent>;
   const authServiceStub = {
-    getCurrentUser: () => {
-      return {
-        displayName: 'display name'
-      };
-    }
+    getCurrentUser: () => { }
   };
 
   beforeEach(async(() => {
@@ -33,9 +29,5 @@ describe('MainComponent', () => {
 
   it('should be created', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should get the current user display name', () => {
-    expect(component.displayName).toBe('display name');
   });
 });
