@@ -3,41 +3,33 @@ import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { Observable } from 'rxjs/Observable';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class AuthService {
 
-  private user: Observable<firebase.User> = null;
-  private userDetails: firebase.User;
+  public user$: Observable<firebase.User>;
 
   constructor(private afAuth: AngularFireAuth, private router: Router) {
-    this.user = afAuth.authState;
-    this.user.subscribe(user => {
-      if (user) {
-        this.userDetails = user;
+    this.user$ = afAuth.authState;
+    this.user$.subscribe(user => {
+      if (user && user.email.endsWith(environment.restrictedEmailDomain)) {
         this.router.navigate(['/dashboard']);
       } else {
-        this.userDetails = null;
-        this.router.navigate(['/login']);
+        this.logout();
       }
     });
   }
 
   signInWithGoogle() {
-    return this.afAuth.auth.signInWithPopup(
-      new firebase.auth.GoogleAuthProvider()
-    );
-  }
-
-  isAuthenticated() {
-    return !!this.userDetails;
+    return this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+      .then(() => {
+        this.router.navigate(['/dashboard']);
+      });
   }
 
   logout() {
     this.afAuth.auth.signOut();
-  }
-
-  getCurrentUser() {
-    return this.userDetails;
+    this.router.navigate(['/login']);
   }
 }

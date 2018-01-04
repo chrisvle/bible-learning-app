@@ -7,11 +7,7 @@ import { AuthService } from '../shared/services/auth.service';
 })
 export class MainComponent {
 
-  displayName: string;
-
-  constructor(public authService: AuthService) {
-    this.displayName = this.authService.getCurrentUser().displayName;
-  }
+  constructor(public authService: AuthService) { }
 
   logout() {
     this.authService.logout();
