@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MainComponent } from './main.component';
 import { AuthService } from '../shared/services/auth.service';
 
-describe('MainComponent', () => {
+xdescribe('MainComponent', () => {
   let component: MainComponent;
   let fixture: ComponentFixture<MainComponent>;
   const authServiceStub = {
