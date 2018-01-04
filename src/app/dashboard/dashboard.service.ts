@@ -1,33 +1,16 @@
 import { Injectable } from '@angular/core';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { GameType } from '../shared/models/game-type.model';
 
 @Injectable()
 export class DashboardService {
-  gameTypes = [
-    {
-      id: 0,
-      type: 'Chapter Only',
-      description: 'Get a random verse. Guess the chapter.'
-    },
-    {
-      id: 1,
-      type: 'Chapter and Verse',
-      description: 'Get a random verse. Guess the chapter and the verse.'
-    },
-    {
-      id: 2,
-      type: 'Fill in the Blank',
-      description: 'Get a random verse. Fill in the Blank.'
-    },
-    {
-      id: 3,
-      type: 'Matching',
-      description: 'Get some random verses. Match the verse with the right chapter.'
-    }
-  ];
+  private gameTypes$: FirebaseListObservable<GameType[]>;
 
-  constructor() { }
+  constructor(private db: AngularFireDatabase) {
+    this.gameTypes$ = this.db.list('game-types');
+  }
 
   getGameTypes() {
-    return this.gameTypes;
+    return this.gameTypes$;
   }
 }
