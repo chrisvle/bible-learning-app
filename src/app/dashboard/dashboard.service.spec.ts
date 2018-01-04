@@ -1,7 +1,7 @@
 import { ReflectiveInjector } from '@angular/core';
 import { DashboardService } from './dashboard.service';
 
-describe('DashboardService', () => {
+xdescribe('DashboardService', () => {
   let dashboardService;
 
   beforeEach(() => {
