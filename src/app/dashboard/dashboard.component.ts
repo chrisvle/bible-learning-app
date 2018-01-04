@@ -14,8 +14,8 @@ export class DashboardComponent {
   oldOrNew: string;
   bibleBook: string;
   gameTypes: FirebaseListObservable<GameType[]>;
-  oldTestamentBooks = [];
-  newTestamentBooks = [];
+  oldTestamentBooks: Observable<any[]>;
+  newTestamentBooks: Observable<any[]>;
 
   constructor(
     private bibleService: BibleService,
