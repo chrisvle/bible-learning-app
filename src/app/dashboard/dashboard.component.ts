@@ -4,6 +4,7 @@ import { DashboardService } from './dashboard.service';
 import { Observable } from 'rxjs/Observable';
 import { FirebaseListObservable } from 'angularfire2/database';
 import { GameType } from '../shared/models/game-type.model';
+import { BibleBook } from '../shared/models/bible-book.model';
 
 @Component({
   templateUrl: './dashboard.component.html',
@@ -14,8 +15,8 @@ export class DashboardComponent {
   oldOrNew: string;
   bibleBook: string;
   gameTypes: FirebaseListObservable<GameType[]>;
-  oldTestamentBooks: Observable<any[]>;
-  newTestamentBooks: Observable<any[]>;
+  oldTestamentBooks: Observable<BibleBook[]>;
+  newTestamentBooks: Observable<BibleBook[]>;
 
   constructor(
     private bibleService: BibleService,
