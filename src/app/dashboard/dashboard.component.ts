@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { BibleService } from '../shared/services/bible.service';
 import { DashboardService } from './dashboard.service';
+import { Observable } from 'rxjs/Observable';
+import { FirebaseListObservable } from 'angularfire2/database';
+import { GameType } from '../shared/models/game-type.model';
 
 @Component({
   templateUrl: './dashboard.component.html',
@@ -10,7 +13,7 @@ export class DashboardComponent {
   gameType: string;
   oldOrNew: string;
   bibleBook: string;
-  gameTypes = [];
+  gameTypes: FirebaseListObservable<GameType[]>;
   oldTestamentBooks = [];
   newTestamentBooks = [];
 
@@ -23,8 +26,8 @@ export class DashboardComponent {
     this.newTestamentBooks = bibleService.getNewTestamentBooks();
   }
 
-  setGameType(id: number): void {
-    this.gameType = this.gameTypes[id].type;
+  setGameType(type: string): void {
+    this.gameType = type;
   }
 
   resetAll(): void {
