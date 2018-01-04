@@ -2,8 +2,7 @@ import { browser } from 'protractor';
 import { Helper } from '../helper';
 import { DashboardPage } from '../page-objects/dashboard.po';
 
-
-describe('Dashboard Page', () => {
+xdescribe('Dashboard Page', () => {
   let helper: Helper;
   let dashboardPage: DashboardPage;
 

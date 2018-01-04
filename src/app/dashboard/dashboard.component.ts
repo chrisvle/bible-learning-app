@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BibleService } from '../shared/bible.service';
+import { BibleService } from '../shared/services/bible.service';
 import { DashboardService } from './dashboard.service';
 
 @Component({
