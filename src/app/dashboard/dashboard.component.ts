@@ -14,17 +14,17 @@ export class DashboardComponent {
   gameType: string;
   oldOrNew: string;
   bibleBook: string;
-  gameTypes: FirebaseListObservable<GameType[]>;
-  oldTestamentBooks: Observable<BibleBook[]>;
-  newTestamentBooks: Observable<BibleBook[]>;
+  gameTypes$: FirebaseListObservable<GameType[]>;
+  oldTestamentBooks$: Observable<BibleBook[]>;
+  newTestamentBooks$: Observable<BibleBook[]>;
 
   constructor(
     private bibleService: BibleService,
     private dashboardService: DashboardService
   ) {
-    this.gameTypes = dashboardService.getGameTypes();
-    this.oldTestamentBooks = bibleService.getOldTestamentBooks();
-    this.newTestamentBooks = bibleService.getNewTestamentBooks();
+    this.gameTypes$ = dashboardService.getGameTypes();
+    this.oldTestamentBooks$ = bibleService.getOldTestamentBooks();
+    this.newTestamentBooks$ = bibleService.getNewTestamentBooks();
   }
 
   setGameType(type: string): void {

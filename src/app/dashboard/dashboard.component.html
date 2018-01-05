@@ -38,7 +38,7 @@
       <div *ngIf="!gameType">
         <h4 class="mb-4">Game Types</h4>
         <div class="row">
-          <div class="col-lg-6 mb-3" *ngFor="let gameType of (gameTypes | async)">
+          <div class="col-lg-6 mb-3" *ngFor="let gameType of (gameTypes$ | async)">
             <div class="card big-card">
               <div class="d-flex flex-column card-block">
                 <h5 class="card-title">{{gameType.type}}</h5>
@@ -82,7 +82,7 @@
         <h4>Old Testament Books</h4>
         <div class="right-content">
           <div class="row">
-              <div class="col-sm-12 col-md-6 col-lg-3 mb-3" *ngFor="let book of (oldTestamentBooks | async)">
+              <div class="col-sm-12 col-md-6 col-lg-3 mb-3" *ngFor="let book of (oldTestamentBooks$ | async)">
                 <div class="card small-card">
                   <div class="d-flex flex-column card-block">
                     <h6 class="card-title">{{book.name}}</h6>
@@ -101,7 +101,7 @@
         <h4>New Testament Books</h4>
         <div class="right-content">
           <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-3 mb-3" *ngFor="let book of (newTestamentBooks | async)">
+            <div class="col-sm-12 col-md-6 col-lg-3 mb-3" *ngFor="let book of (newTestamentBooks$ | async)">
               <div class="card small-card">
                 <div class="d-flex flex-column card-block">
                   <h6 class="card-title">{{book.name}}</h6>
