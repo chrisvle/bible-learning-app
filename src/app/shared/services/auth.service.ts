@@ -13,9 +13,7 @@ export class AuthService {
   constructor(private afAuth: AngularFireAuth, private router: Router) {
     this.user$ = afAuth.authState;
     this.user$.subscribe(user => {
-      if (user && user.email.endsWith(environment.restrictedEmailDomain)) {
-        this.router.navigate(['/dashboard']);
-      } else {
+      if (!user || !user.email.endsWith(environment.restrictedEmailDomain)) {
         this.logout();
       }
     });
