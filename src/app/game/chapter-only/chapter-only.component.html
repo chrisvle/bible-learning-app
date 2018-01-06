@@ -1,1 +1,32 @@
-{{ book }}
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-flex flex-column jumbotron col-md-5 col-lg-3 left-panel">
+      <h3 class="mb-5">Game Details</h3>
+      <div class="mb-5">
+        <h5 class="mb-3">Bible Book</h5>
+        <div>{{ book }}</div>
+      </div>
+      <div class="mb-5">
+        <h5 class="mb-3">Percentage</h5>
+        <div *ngIf="totalQuestions === 0; else nonZeroTotalQuestions"><em>You haven't answered any questions yet.</em></div>
+        <ng-template #nonZeroTotalQuestions>
+          <div>{{ ((correctAnswers / totalQuestions) * 100) | number : '1.2-2' }}%</div>
+        </ng-template>
+      </div>
+      <div class="mb-5">
+        <h5 class="mb-3">Longest Streak</h5>
+        <div *ngIf="longestStreak === 0; else nonZeroStreak">0</div>
+        <ng-template #nonZeroStreak>
+          <div>{{longestStreak}}</div>
+        </ng-template>
+      </div>
+      <div class="mt-auto">
+        <button class="btn btn-primary col mb-2" (click)="incrementStreak()">Increment Streak Test</button>
+        <button class="btn btn-info col mb-2" (click)="incrementCorrectAnswers()">Increment Correct Answers Test</button>
+        <button class="btn btn-warning col mb-2" (click)="incrementTotalQuestions()">Increment Total Questions Test</button>
+        <button class="btn btn-danger col" (click)="resetGameStats()">Reset Game Statistics</button>
+      </div>
+    </div>
+  </div>
+</div>
+
