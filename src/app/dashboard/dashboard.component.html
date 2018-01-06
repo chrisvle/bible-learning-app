@@ -43,7 +43,7 @@
               <div class="d-flex flex-column card-block">
                 <h5 class="card-title">{{gameType.type}}</h5>
                 <p class="card-text">{{gameType.description}}</p>
-                <button class="btn btn-primary w-25 mt-auto" (click)="setGameType(gameType.type)" id="{{gameType.type.split(' ').join('')}}SelectButton">Select</button>
+                <button class="btn btn-primary w-25 mt-auto" (click)="setGameType(gameType.type, gameType.id)" id="{{gameType.type.split(' ').join('')}}SelectButton">Select</button>
               </div>
             </div>
           </div>
@@ -117,7 +117,7 @@
         <div class="jumbotron">
           <h3 class="my-5">Please double check your game settings to make sure they are correct.</h3>
           <h4 class="mb-4">If they are correct, then: </h4>
-          <button class="btn btn-lg btn-primary" id="playNowButton">Play Now</button>
+          <button class="btn btn-lg btn-primary" id="playNowButton" (click)="playNow()">Play Now</button>
         </div>
       </div>
     </div>

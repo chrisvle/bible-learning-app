@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Testament } from '../enums/testament.enum';
+import { Testaments } from '../enums/testaments.enum';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { BibleBook } from '../models/bible-book.model';
 
@@ -14,13 +14,13 @@ export class BibleService {
 
   getOldTestamentBooks() {
     return this.bibleBooks$.map(books =>
-      books.filter(book => book.testament === Testament.Old)
+      books.filter(book => book.testament === Testaments.Old)
     );
   }
 
   getNewTestamentBooks() {
     return this.bibleBooks$.map(books =>
-      books.filter(book => book.testament === Testament.New)
+      books.filter(book => book.testament === Testaments.New)
     );
   }
 }
