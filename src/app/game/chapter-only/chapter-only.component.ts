@@ -1,15 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-chapter-only',
   templateUrl: './chapter-only.component.html',
   styleUrls: ['./chapter-only.component.scss']
 })
 export class ChapterOnlyComponent implements OnInit {
 
-  constructor() { }
+  book: string;
 
-  ngOnInit() {
+  constructor(private ar: ActivatedRoute, private router: Router) {
+    this.book = this.ar.snapshot.queryParams['book'];
+    this.router.navigateByUrl('/game/chapter-only');
   }
 
+  ngOnInit() {
+    if (!this.book) {
+      this.router.navigateByUrl('/dashboard');
+    }
+  }
 }
