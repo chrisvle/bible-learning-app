@@ -9,17 +9,10 @@ import 'rxjs/add/observable/forkJoin';
 export class BibleService {
 
   private bibleBooks$: FirebaseListObservable<BibleBook[]>;
-  // private esv$: FirebaseListObservable<any[]>;
-  private bibleBook$: FirebaseListObservable<any[]>;
-
-  private numberOfChapters$: Observable<number>;
-  private numberOfChapters: number;
-
   private randomVerse$: any;
 
   constructor(private db: AngularFireDatabase) {
     this.bibleBooks$ = this.db.list('bible-books');
-    // this.esv$ = this.db.list('esv');
   }
 
   getOldTestamentBooks() {
@@ -41,12 +34,18 @@ export class BibleService {
   }
 
   getRandomVerse(bibleBook: string) {
-    // this works!!
-    // return this.esv$.map(bible => bible.filter(esv => esv.$key === 'Matthew')[0][9][1]);
-    this.bibleBook$ = this.db.list(`esv/${bibleBook}`);
-    return this.bibleBook$;
-
-    // this.randomVerse$ = this.db.object(`esv/${bibleBook}/9/1`);
-    // return this.randomVerse$;
+    const book$ = this.db.list(`esv/${bibleBook}`);
+    return book$.map(chapters => {
+      const randomChapter = Math.floor(Math.random() * chapters.length);
+      const chapter = chapters[randomChapter];
+      let randomVerseNumber = Math.floor(Math.random() * (chapter.length - 1)) + 1;
+      if (chapters[randomChapter][randomVerseNumber] == null) {
+        randomVerseNumber = Math.floor(Math.random() * (chapter.length - 1)) + 1;
+      }
+      return {
+        verse: chapters[randomChapter][randomVerseNumber],
+        chapter: chapters[randomChapter].$key
+      };
+    });
   }
 }
