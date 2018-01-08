@@ -27,6 +27,9 @@
         <button class="btn btn-danger col" (click)="resetGameStats()">Reset Game Statistics</button>
       </div>
     </div>
+    <div class="col-md-7 col-lg-9 pl-4">
+      <div>{{ (randomVerse$ | async) | json }}</div>
+    </div>
   </div>
 </div>
 
