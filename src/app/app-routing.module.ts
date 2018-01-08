@@ -15,12 +15,16 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
-        path: '',
-        redirectTo: 'dashboard', pathMatch: 'full'
+        path: 'game',
+        loadChildren: 'app/game/game.module#GameModule'
       },
       {
         path: 'dashboard',
         loadChildren: 'app/dashboard/dashboard.module#DashboardModule'
+      },
+      {
+        path: '',
+        redirectTo: 'dashboard', pathMatch: 'full'
       }
     ]
   }
