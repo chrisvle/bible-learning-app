@@ -1,18 +1,24 @@
-.left-panel {
-  height: 91vh;
-}
+$break-small: 768px;
 
-.right-content {
-  max-height: 85vh;
-  overflow-y: scroll;
+@media screen and (min-width: $break-small) {
+  .left-panel {
+    height: 91vh;
+  }
+
+  .right-content {
+    max-height: 85vh;
+    overflow-y: scroll;
+  }
 }
 
 .big-card {
   height: 19vh;
+  min-height: 10rem;
 }
 
 .small-card {
   height: 12vh;
+  min-height: 6rem;
 }
 
 

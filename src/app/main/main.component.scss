@@ -1,0 +1,7 @@
+.non-clickable {
+  cursor: default;
+
+  &.nav-link:hover {
+    color: rgba(0, 0, 0, .5);
+  }
+}
