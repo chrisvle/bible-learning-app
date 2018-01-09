@@ -4,19 +4,18 @@
   </button>
   <a class="navbar-brand" routerLink="">Bible Learning</a>
 
-  <div class="d-flex align-items-center collapse navbar-collapse" id="navbarSupportedContent">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
+      <!-- <li class="nav-item active">
         <a class="nav-link" routerLink="/dashboard">Dashboard</a>
-      </li>
+      </li> -->
     </ul>
-    <span class="navbar-text" *ngIf="(authService.user$ | async)?.displayName">
-      Welcome {{(authService.user$ | async)?.displayName}}
-    </span>
-    <span class="navbar-text ml-2 mr-1" *ngIf="(authService.user$ | async)?.displayName">|</span>
     <ul class="navbar-nav my-2 my-lg-0">
+      <span class="nav-item" *ngIf="(authService.user$ | async)?.displayName">
+        <span class="nav-link non-clickable">Welcome, {{(authService.user$ | async)?.displayName}}</span>
+      </span>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/login" (click)="logout()">Log Out</a>
+        <a class="nav-link" (click)="logout()">Log Out</a>
       </li>
     </ul>
   </div>
