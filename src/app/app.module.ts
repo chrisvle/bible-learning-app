@@ -12,6 +12,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { ChapterOnlyComponent } from './game/chapter-only/chapter-only.component';
+import { Utility } from './shared/utility';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ChapterOnlyComponent } from './game/chapter-only/chapter-only.component
   providers: [
     AuthService,
     BibleService,
-    AuthGuard
+    AuthGuard,
+    Utility
   ],
   bootstrap: [AppComponent]
 })
