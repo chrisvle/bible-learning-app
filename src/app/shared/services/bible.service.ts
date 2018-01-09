@@ -4,7 +4,6 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/databa
 import { BibleBook } from '../models/bible-book.model';
 import { Utility } from '../utility';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/of';
 
 @Injectable()
