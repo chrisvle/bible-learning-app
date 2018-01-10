@@ -43,7 +43,7 @@ export class DashboardComponent {
     this.bibleBook = null;
   }
 
-  playNow() {
+  playNow(): void {
     if (this.gameTypeId === GameTypes.ChapterOnly) {
       this.router.navigate(['/game/chapter-only'], { queryParams: { book: this.bibleBook}, skipLocationChange: true });
     }

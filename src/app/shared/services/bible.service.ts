@@ -31,7 +31,7 @@ export class BibleService {
     });
   }
 
-  getNewTestamentBooks(options?) {
+  getNewTestamentBooks(options?): Observable<BibleBook[]> {
     return this.bibleBooks$.map(books => {
       if (options.filterOutOneChapterBooks) {
         return books.filter(book => book.testament === Testaments.New
@@ -42,7 +42,7 @@ export class BibleService {
     });
   }
 
-  getRandomVerse(bibleBook: string) {
+  getRandomVerse(bibleBook: string): Observable<{verse: string, chapter: string}> {
     let book$, chapter, randomVerseNumber: number;
     if (this.localEsv[bibleBook]) {
       console.log(`using local copy of ${bibleBook}`);
