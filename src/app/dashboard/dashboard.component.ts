@@ -27,13 +27,18 @@ export class DashboardComponent {
     private router: Router
   ) {
     this.gameTypes$ = dashboardService.getGameTypes();
-    this.oldTestamentBooks$ = bibleService.getOldTestamentBooks({ filterOutOneChapterBooks: true });
-    this.newTestamentBooks$ = bibleService.getNewTestamentBooks({ filterOutOneChapterBooks: true });
   }
 
   setGameType(type: string, id: number): void {
     this.gameType = type;
     this.gameTypeId = id;
+    if (id === GameTypes.ChapterOnly) {
+      this.oldTestamentBooks$ = this.bibleService.getOldTestamentBooks({ filterOutOneChapterBooks: true });
+      this.newTestamentBooks$ = this.bibleService.getNewTestamentBooks({ filterOutOneChapterBooks: true });
+    } else {
+      this.oldTestamentBooks$ = this.bibleService.getOldTestamentBooks();
+      this.newTestamentBooks$ = this.bibleService.getNewTestamentBooks();
+    }
   }
 
   resetAll(): void {
