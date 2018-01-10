@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { BibleService } from '../../shared/services/bible.service';
@@ -8,7 +8,7 @@ import { AttemptStatuses } from '../../shared/enums/attempt-status.enum';
   templateUrl: './chapter-only.component.html',
   styleUrls: ['./chapter-only.component.scss']
 })
-export class ChapterOnlyComponent implements OnInit {
+export class ChapterOnlyComponent implements OnInit, AfterViewInit {
 
   book: string;
   currentStreak = 0;
@@ -22,6 +22,7 @@ export class ChapterOnlyComponent implements OnInit {
   attemptThree = AttemptStatuses.Unused;
   currentAttempt = 1;
   attemptInput = '';
+  incorrectGuesses: string[] = [];
   noMoreAttempts = false;
   showCorrectChapterAlert = false;
   showCorrectChapterButton = true;
@@ -33,13 +34,21 @@ export class ChapterOnlyComponent implements OnInit {
   constructor(private ar: ActivatedRoute, private router: Router, private bibleService: BibleService) {
     this.book = this.ar.snapshot.queryParams['book'];
     this.router.navigateByUrl('/game/chapter-only');
-    this.getRandomVerse();
+    this.verseMetadata$ = this.bibleService.getRandomVerse(this.book);
+    this.verseMetadata$.subscribe(metadata => {
+      this.verse = metadata.verse;
+      this.chapter = metadata.chapter;
+    });
   }
 
   ngOnInit() {
     if (!this.book) {
       this.router.navigateByUrl('/dashboard');
     }
+  }
+
+  ngAfterViewInit() {
+    this.attemptElement.nativeElement.focus();
   }
 
   resetGameStats() {
@@ -57,6 +66,7 @@ export class ChapterOnlyComponent implements OnInit {
     this.noMoreAttempts = false;
     this.showCorrectChapterAlert = false;
     this.showCorrectChapterButton = true;
+    this.incorrectGuesses = [];
   }
 
   getRandomVerse() {
@@ -96,6 +106,7 @@ export class ChapterOnlyComponent implements OnInit {
       } else {
         this.attemptThree = AttemptStatuses.Incorrect;
       }
+      this.incorrectGuesses.push(this.attemptInput);
       this.currentStreak = 0;
     }
     this.attemptInput = '';

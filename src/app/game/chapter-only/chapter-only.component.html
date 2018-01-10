@@ -59,23 +59,38 @@
         <h5>{{ verse }}</h5>
       </div>
       <div class="mb-3" *ngIf="nonAttemptsCorrect() && !noMoreAttempts">
-        <label class="mb-2"><strong>What chapter is this verse found in?</strong></label>
-        <input #attempt type="text" class="form-control col-lg-3 col-md-6 col-sm-3" [(ngModel)]="attemptInput" autofocus>
+        <label class="mb-2" *ngIf="attemptOne == 0; else nonZeroAttemptNumber"><strong>What chapter is this verse found in?</strong></label>
+        <ng-template #nonZeroAttemptNumber>
+          <div class="mb-3">
+            <label class="mb-2"><strong>Sorry, that's incorrect. Try again!</strong></label>
+            <div>So far, you have guessed: {{ incorrectGuesses.join(', ') }}</div>
+          </div>
+        </ng-template>
       </div>
-      <div class="mb-3" *ngIf="!nonAttemptsCorrect()">
-        <label class="mb-2"><strong>You are correct!</strong></label>
-        <button class="btn btn-success btn-block col-lg-4 col-md-8 col-sm-6"
-          (click)="getRandomVerse()">
-          Get Another Random Verse
+      <div [hidden]="!(nonAttemptsCorrect() && !noMoreAttempts)">
+        <input #attempt type="text"
+          class="form-control col-lg-3 col-md-6 col-sm-3 mb-2"
+          [(ngModel)]="attemptInput"
+          (keyup.enter)="submit()"
+          autofocus>
+        <button (click)="submit()"
+          class="btn btn-primary btn-block col-lg-3 col-md-6 col-sm-3"
+          [disabled]="attemptInput === ''">
+          Submit
         </button>
       </div>
       <div class="mb-4">
-        <button (click)="submit()" class="btn btn-primary btn-block col-lg-3 col-md-6 col-sm-3"
-          *ngIf="nonAttemptsCorrect() && !noMoreAttempts">
-          Submit
-        </button>
+        <div *ngIf="!nonAttemptsCorrect()">
+          <label class="mb-1"><strong>That's correct!</strong></label>
+          <div class="mb-3">This verse is in {{ book }} {{ chapter }}</div>
+          <button class="btn btn-success btn-block col-lg-4 col-md-8 col-sm-6"
+            (click)="getRandomVerse()">
+            Get Another Random Verse
+          </button>
+        </div>
         <div *ngIf="noMoreAttempts">
-          <div class="my-3"><strong>You've used all 3 attempts. What would you like to do next?</strong></div>
+          <div class="mt-3"><strong>You've used all 3 attempts. What would you like to do next?</strong></div>
+          <div class="mt-2 mb-3">You guessed: {{ incorrectGuesses.join(', ') }}</div>
           <button class="btn btn-warning btn-block col-lg-4 col-md-8 col-sm-6"
             (click)="showCorrectChapter()"
             *ngIf="showCorrectChapterButton">
