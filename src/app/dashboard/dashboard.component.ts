@@ -27,8 +27,8 @@ export class DashboardComponent {
     private router: Router
   ) {
     this.gameTypes$ = dashboardService.getGameTypes();
-    this.oldTestamentBooks$ = bibleService.getOldTestamentBooks();
-    this.newTestamentBooks$ = bibleService.getNewTestamentBooks();
+    this.oldTestamentBooks$ = bibleService.getOldTestamentBooks({ filterOutOneChapterBooks: true });
+    this.newTestamentBooks$ = bibleService.getNewTestamentBooks({ filterOutOneChapterBooks: true });
   }
 
   setGameType(type: string, id: number): void {

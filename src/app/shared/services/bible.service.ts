@@ -16,16 +16,30 @@ export class BibleService {
     this.bibleBooks$ = this.db.list('bible-books');
   }
 
-  getOldTestamentBooks() {
-    return this.bibleBooks$.map(books =>
-      books.filter(book => book.testament === Testaments.Old)
-    );
+  /*
+   * Options Object: {}
+   * filter out one-chapter books - filterOutOneChapterBooks: true
+   */
+  getOldTestamentBooks(options?): Observable<BibleBook[]> {
+    return this.bibleBooks$.map(books => {
+      if (options.filterOutOneChapterBooks) {
+        return books.filter(book => book.testament === Testaments.Old
+          && book.chapters !== 1);
+      } else {
+        return books.filter(book => book.testament === Testaments.Old);
+      }
+    });
   }
 
-  getNewTestamentBooks() {
-    return this.bibleBooks$.map(books =>
-      books.filter(book => book.testament === Testaments.New)
-    );
+  getNewTestamentBooks(options?) {
+    return this.bibleBooks$.map(books => {
+      if (options.filterOutOneChapterBooks) {
+        return books.filter(book => book.testament === Testaments.New
+          && book.chapters !== 1);
+      } else {
+        return books.filter(book => book.testament === Testaments.New);
+      }
+    });
   }
 
   getRandomVerse(bibleBook: string) {
