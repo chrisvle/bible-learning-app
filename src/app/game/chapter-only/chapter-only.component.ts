@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { BibleService } from '../../shared/services/bible.service';
@@ -8,7 +8,7 @@ import { AttemptStatuses } from '../../shared/enums/attempt-status.enum';
   templateUrl: './chapter-only.component.html',
   styleUrls: ['./chapter-only.component.scss']
 })
-export class ChapterOnlyComponent implements OnInit, AfterViewInit {
+export class ChapterOnlyComponent implements OnInit {
 
   book: string;
   currentStreak = 0;
@@ -47,10 +47,6 @@ export class ChapterOnlyComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
-    this.attemptElement.nativeElement.focus();
-  }
-
   resetGameStats() {
     this.currentStreak = 0;
     this.correctAnswers = 0;
@@ -85,6 +81,9 @@ export class ChapterOnlyComponent implements OnInit, AfterViewInit {
   }
 
   submit() {
+    if (this.attemptInput === '') {
+      return;
+    }
     if (this.attemptInput === this.chapter) {
       if (this.currentAttempt === 1) {
         this.attemptOne = AttemptStatuses.Correct;
