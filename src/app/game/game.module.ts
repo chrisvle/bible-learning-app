@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChapterOnlyComponent } from './chapter-only/chapter-only.component';
 import { GameRoutingModule } from './game-routing.module';
+import { ChapterMcComponent } from './chapter-mc/chapter-mc.component';
 
 @NgModule({
   imports: [
@@ -11,7 +12,8 @@ import { GameRoutingModule } from './game-routing.module';
     FormsModule
   ],
   declarations: [
-    ChapterOnlyComponent
+    ChapterOnlyComponent,
+    ChapterMcComponent
   ]
 })
 export class GameModule { }

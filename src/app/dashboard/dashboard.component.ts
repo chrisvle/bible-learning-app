@@ -47,5 +47,8 @@ export class DashboardComponent {
     if (this.gameTypeId === GameTypes.ChapterOnly) {
       this.router.navigate(['/game/chapter-only'], { queryParams: { book: this.bibleBook}, skipLocationChange: true });
     }
+    else if (this.gameTypeId === GameTypes.ChapterMC) {
+      this.router.navigate(['/game/chapter-mc'], { queryParams: { book: this.bibleBook}, skipLocationChange: true });
+    }
   }
 }

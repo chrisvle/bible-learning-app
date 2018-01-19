@@ -31,6 +31,7 @@ export class BibleService {
 
   getRandomVerse(bibleBook: string) {
     let book$, chapter, randomVerseNumber: number;
+    let options = [];
     if (this.localEsv[bibleBook]) {
       console.log(`using local copy of ${bibleBook}`);
       book$ = this.localEsv[bibleBook];
@@ -39,9 +40,17 @@ export class BibleService {
       while (chapter[randomVerseNumber] == null) {
         randomVerseNumber = this.util.rng(chapter.length - 1) + 1;
       }
+      options.push(chapter.$key);
+      while (options.length < 4) {
+        let choice = this.util.rng(book$.length);
+        if (!options.includes(choice) && choice != 0) {
+          options.push(choice);
+        }
+      }
       return Observable.of({
         verse: chapter[randomVerseNumber],
-        chapter: chapter.$key
+        chapter: chapter.$key,
+        options: options
       });
     } else {
       console.log(`requesting ${bibleBook} from firebase`);
@@ -55,9 +64,17 @@ export class BibleService {
         while (chapter[randomVerseNumber] == null) {
           randomVerseNumber = this.util.rng(chapter.length - 1) + 1;
         }
+        options.push(chapter.$key);
+        while (options.length < 4) {
+          let choice = this.util.rng(chapters.length);
+          if (!options.includes(choice) && choice != 0) {
+            options.push(choice);
+          }
+        }
         return {
           verse: chapter[randomVerseNumber],
-          chapter: chapter.$key
+          chapter: chapter.$key,
+          options: options
         };
       });
     }
