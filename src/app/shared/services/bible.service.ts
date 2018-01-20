@@ -44,6 +44,7 @@ export class BibleService {
 
   getRandomVerse(bibleBook: string): Observable<{verse: string, chapter: string}> {
     let book$, chapter, randomVerseNumber: number;
+    let options = [];
     if (this.localEsv[bibleBook]) {
       book$ = this.localEsv[bibleBook];
       chapter = book$[this.util.rng(book$.length)];
@@ -51,9 +52,17 @@ export class BibleService {
       while (chapter[randomVerseNumber] == null) {
         randomVerseNumber = this.util.rng(chapter.length - 1) + 1;
       }
+      options.push(+chapter.$key);
+      while (options.length < 4) {
+        let choice = this.util.rng(book$.length);
+        if (!options.includes(choice) && choice != 0) {
+          options.push(choice);
+        }
+      }
       return Observable.of({
         verse: chapter[randomVerseNumber],
-        chapter: chapter.$key
+        chapter: chapter.$key,
+        options: this.util.shuffleInPlace(options)
       });
     } else {
       book$ = this.db.list(`esv/${bibleBook}`);
@@ -66,9 +75,17 @@ export class BibleService {
         while (chapter[randomVerseNumber] == null) {
           randomVerseNumber = this.util.rng(chapter.length - 1) + 1;
         }
+        options.push(+chapter.$key);
+        while (options.length < 4) {
+          let choice = this.util.rng(chapters.length);
+          if (!options.includes(choice) && choice != 0) {
+            options.push(choice);
+          }
+        }
         return {
           verse: chapter[randomVerseNumber],
-          chapter: chapter.$key
+          chapter: chapter.$key,
+          options: this.util.shuffleInPlace(options)
         };
       });
     }

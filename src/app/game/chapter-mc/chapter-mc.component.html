@@ -1,0 +1,84 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-flex flex-column jumbotron col-md-5 col-lg-3 left-panel">
+      <h3 class="mb-5">Game Details</h3>
+      <div class="mb-5">
+        <h5 class="mb-3">Bible Book</h5>
+        <div>{{ book }}</div>
+      </div>
+      <div class="mb-5">
+        <h5 class="mb-3">Percentage</h5>
+        <div *ngIf="totalQuestions === 0; else nonZeroTotalQuestions"><em>You haven't answered any questions yet.</em></div>
+        <ng-template #nonZeroTotalQuestions>
+          <div>{{ ((correctAnswers / totalQuestions) * 100) | number : '1.2-2' }}%</div>
+        </ng-template>
+      </div>
+      <div class="mb-5">
+        <h5 class="mb-3">Current Streak</h5>
+        <div *ngIf="currentStreak === 0; else nonZeroCurrentStreak">0</div>
+        <ng-template #nonZeroCurrentStreak>
+          <div>{{currentStreak}}</div>
+        </ng-template>
+      </div>
+      <div class="mb-5">
+          <h5 class="mb-3">Longest Streak</h5>
+          <div *ngIf="longestStreak === 0; else nonZeroLongestStreak">0</div>
+          <ng-template #nonZeroLongestStreak>
+            <div>{{longestStreak}}</div>
+          </ng-template>
+        </div>
+      <div class="mt-auto">
+        <button class="btn btn-danger col" (click)="resetGameStats()">Reset Game Statistics</button>
+      </div>
+    </div>
+    <div class="col-md-7 col-lg-9 pl-4">
+      <hr class="mb-4">
+      <div class="alert alert-danger" role="alert" *ngIf="showCorrectChapterAlert">
+        <strong>This verse was from chapter {{ chapter }}.</strong>
+      </div>
+      <div class="mb-5">
+        <label class="mb-2"><strong>Here's a random verse from {{ book }}:</strong></label>
+        <h5>{{ verse }}</h5>
+      </div>
+      <div class="mb-3">
+        <label class="mb-2"><strong>What chapter is this verse found in?</strong></label>
+        <div class="options" *ngFor= "let choice of options;let i = index">
+          <input
+            type="radio"
+            name="choice"
+            [value] = "choice"
+            [checked]='i === 0'
+            (change)="selectChoice(choice)">
+            <label for="choice">{{ choice }}</label>
+        </div>
+      </div>
+
+        <div class="mb-4" *ngIf="!attempt">
+          <button (click)="submit()" class="btn btn-primary btn-block col-lg-3 col-md-6 col-sm-3">
+            Submit
+          </button>
+        </div>
+
+        <div *ngIf="!correct && attempt">
+          <div class="my-3"><strong>You got this wrong. What would you like to do next?</strong></div>
+          <button class="btn btn-warning btn-block col-lg-4 col-md-8 col-sm-6"
+            (click)="showCorrectChapter()"
+            *ngIf="showCorrectChapterButton">
+            Show Correct Chapter
+          </button>
+          <button class="btn btn-danger btn-block col-lg-4 col-md-8 col-sm-6"
+            (click)="getRandomVerse()">
+            Get Another Random Verse
+          </button>
+        </div>
+
+        <div class="mb-3" *ngIf="correct && attempt">
+          <label class="mb-2"><strong>You are correct!</strong></label>
+          <button class="btn btn-success btn-block col-lg-4 col-md-8 col-sm-6"
+            (click)="getRandomVerse()">
+            Get Another Random Verse
+          </button>
+        </div>
+    </div>
+  </div>
+</div>
