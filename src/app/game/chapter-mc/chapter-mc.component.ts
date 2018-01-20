@@ -69,16 +69,11 @@ export class ChapterMcComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.attemptInput);
-    console.log(this.chapter);
     this.attempt = true;
     if (this.attemptInput === '') {
       this.attemptInput = this.options[0].toString();
     }
     if (this.attemptInput === this.chapter) {
-      console.log("correct")
-      console.log(this.correct);
-      console.log(this.attempt);
       this.correct = true;
       this.correctAnswers++;
       this.currentStreak++;
@@ -86,9 +81,6 @@ export class ChapterMcComponent implements OnInit {
         this.longestStreak = this.currentStreak;
       }
     } else {
-      console.log("incorrect")
-      console.log(this.correct);
-      console.log(this.attempt);
       this.currentStreak = 0;
       this.correct = false;
     }
