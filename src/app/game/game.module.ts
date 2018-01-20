@@ -4,12 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { ChapterOnlyComponent } from './chapter-only/chapter-only.component';
 import { GameRoutingModule } from './game-routing.module';
 import { ChapterMcComponent } from './chapter-mc/chapter-mc.component';
+import { FocusModule } from 'angular2-focus';
 
 @NgModule({
   imports: [
     CommonModule,
     GameRoutingModule,
-    FormsModule
+    FormsModule,
+    FocusModule.forRoot()
   ],
   declarations: [
     ChapterOnlyComponent,

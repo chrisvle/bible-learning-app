@@ -28,27 +28,28 @@
           </ng-template>
         </div>
       <div class="mt-auto">
-        <button class="btn btn-danger col" (click)="resetGameStats()">Reset Game Statistics</button>
+        <button class="btn btn-warning col mb-2" (click)="resetGameStats()">Reset Game Statistics</button>
+        <button class="btn btn-danger col" routerLink="/dashboard">Quit Game</button>
       </div>
     </div>
     <div class="col-md-7 col-lg-9 pl-4">
       <hr class="mb-4">
       <div class="d-flex justify-content-between">
-        <h5>Attempt 1: 
+        <h4>Attempt 1: 
           <i class="fa fa-circle-o fa-lg" *ngIf="attemptOne == 0"></i>
-          <i class="fa fa-times-circle fa-lg" *ngIf="attemptOne == 1"></i>
-          <i class="fa fa-check-circle fa-lg" *ngIf="attemptOne == 2"></i>
-        </h5>
-        <h5>Attempt 2: 
+          <i class="fa fa-times-circle fa-lg text-danger" *ngIf="attemptOne == 1"></i>
+          <i class="fa fa-check-circle fa-lg text-success" *ngIf="attemptOne == 2"></i>
+        </h4>
+        <h4>Attempt 2: 
           <i class="fa fa-circle-o fa-lg" *ngIf="attemptTwo == 0"></i>
-          <i class="fa fa-times-circle fa-lg" *ngIf="attemptTwo == 1"></i>
-          <i class="fa fa-check-circle fa-lg" *ngIf="attemptTwo == 2"></i>
-        </h5>
-        <h5>Attempt 3: 
+          <i class="fa fa-times-circle fa-lg text-danger" *ngIf="attemptTwo == 1"></i>
+          <i class="fa fa-check-circle fa-lg text-success" *ngIf="attemptTwo == 2"></i>
+        </h4>
+        <h4>Attempt 3: 
           <i class="fa fa-circle-o fa-lg" *ngIf="attemptThree == 0"></i>
-          <i class="fa fa-times-circle fa-lg" *ngIf="attemptThree == 1"></i>
-          <i class="fa fa-check-circle fa-lg" *ngIf="attemptThree == 2"></i>
-        </h5>
+          <i class="fa fa-times-circle fa-lg text-danger" *ngIf="attemptThree == 1"></i>
+          <i class="fa fa-check-circle fa-lg text-success" *ngIf="attemptThree == 2"></i>
+        </h4>
       </div>
       <hr class="mb-4">
       <div class="alert alert-danger" role="alert" *ngIf="showCorrectChapterAlert">
@@ -59,23 +60,36 @@
         <h5>{{ verse }}</h5>
       </div>
       <div class="mb-3" *ngIf="nonAttemptsCorrect() && !noMoreAttempts">
-        <label class="mb-2"><strong>What chapter is this verse found in?</strong></label>
-        <input #attempt type="text" class="form-control col-lg-3 col-md-6 col-sm-3" [(ngModel)]="attemptInput" autofocus>
-      </div>
-      <div class="mb-3" *ngIf="!nonAttemptsCorrect()">
-        <label class="mb-2"><strong>You are correct!</strong></label>
-        <button class="btn btn-success btn-block col-lg-4 col-md-8 col-sm-6"
-          (click)="getRandomVerse()">
-          Get Another Random Verse
+        <label class="mb-2" *ngIf="attemptOne == 0; else nonZeroAttemptNumber"><strong>What chapter is this verse found in?</strong></label>
+        <ng-template #nonZeroAttemptNumber>
+          <div class="mb-3">
+            <label class="mb-2"><strong>Sorry, that's incorrect. Try again!</strong></label>
+            <div>So far, you have guessed: {{ incorrectGuesses.join(', ') }}</div>
+          </div>
+        </ng-template>
+        <input #attempt type="text"
+          class="form-control col-lg-3 col-md-6 col-sm-3 mb-2"
+          [(ngModel)]="attemptInput"
+          (keyup.enter)="submit()"
+          focus="true">
+        <button (click)="submit()"
+          class="btn btn-primary btn-block col-lg-3 col-md-6 col-sm-3"
+          [disabled]="attemptInput === ''">
+          Submit
         </button>
       </div>
       <div class="mb-4">
-        <button (click)="submit()" class="btn btn-primary btn-block col-lg-3 col-md-6 col-sm-3"
-          *ngIf="nonAttemptsCorrect() && !noMoreAttempts">
-          Submit
-        </button>
+        <div *ngIf="!nonAttemptsCorrect()">
+          <label class="mb-1"><strong>That's correct!</strong></label>
+          <div class="mb-3">This verse is in {{ book }} {{ chapter }}</div>
+          <button class="btn btn-success btn-block col-lg-4 col-md-8 col-sm-6"
+            (click)="getRandomVerse()">
+            Get Another Random Verse
+          </button>
+        </div>
         <div *ngIf="noMoreAttempts">
-          <div class="my-3"><strong>You've used all 3 attempts. What would you like to do next?</strong></div>
+          <div class="mt-3"><strong>You've used all 3 attempts. What would you like to do next?</strong></div>
+          <div class="mt-2 mb-3">You guessed: {{ incorrectGuesses.join(', ') }}</div>
           <button class="btn btn-warning btn-block col-lg-4 col-md-8 col-sm-6"
             (click)="showCorrectChapter()"
             *ngIf="showCorrectChapterButton">

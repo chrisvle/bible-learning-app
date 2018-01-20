@@ -22,6 +22,7 @@ export class ChapterOnlyComponent implements OnInit {
   attemptThree = AttemptStatuses.Unused;
   currentAttempt = 1;
   attemptInput = '';
+  incorrectGuesses: string[] = [];
   noMoreAttempts = false;
   showCorrectChapterAlert = false;
   showCorrectChapterButton = true;
@@ -33,7 +34,11 @@ export class ChapterOnlyComponent implements OnInit {
   constructor(private ar: ActivatedRoute, private router: Router, private bibleService: BibleService) {
     this.book = this.ar.snapshot.queryParams['book'];
     this.router.navigateByUrl('/game/chapter-only');
-    this.getRandomVerse();
+    this.verseMetadata$ = this.bibleService.getRandomVerse(this.book);
+    this.verseMetadata$.subscribe(metadata => {
+      this.verse = metadata.verse;
+      this.chapter = metadata.chapter;
+    });
   }
 
   ngOnInit() {
@@ -57,6 +62,7 @@ export class ChapterOnlyComponent implements OnInit {
     this.noMoreAttempts = false;
     this.showCorrectChapterAlert = false;
     this.showCorrectChapterButton = true;
+    this.incorrectGuesses = [];
   }
 
   getRandomVerse() {
@@ -75,6 +81,9 @@ export class ChapterOnlyComponent implements OnInit {
   }
 
   submit() {
+    if (this.attemptInput === '') {
+      return;
+    }
     if (this.attemptInput === this.chapter) {
       if (this.currentAttempt === 1) {
         this.attemptOne = AttemptStatuses.Correct;
@@ -96,6 +105,7 @@ export class ChapterOnlyComponent implements OnInit {
       } else {
         this.attemptThree = AttemptStatuses.Incorrect;
       }
+      this.incorrectGuesses.push(this.attemptInput);
       this.currentStreak = 0;
     }
     this.attemptInput = '';
