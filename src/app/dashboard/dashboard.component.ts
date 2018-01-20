@@ -32,7 +32,7 @@ export class DashboardComponent {
   setGameType(type: string, id: number): void {
     this.gameType = type;
     this.gameTypeId = id;
-    if (id === GameTypes.ChapterOnly) {
+    if (id === GameTypes.ChapterOnly || id === GameTypes.ChapterMC) {
       this.oldTestamentBooks$ = this.bibleService.getOldTestamentBooks({ filterOutOneChapterBooks: true });
       this.newTestamentBooks$ = this.bibleService.getNewTestamentBooks({ filterOutOneChapterBooks: true });
     } else {
