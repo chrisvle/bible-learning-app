@@ -40,7 +40,7 @@ export class BibleService {
       while (chapter[randomVerseNumber] == null) {
         randomVerseNumber = this.util.rng(chapter.length - 1) + 1;
       }
-      options.push(chapter.$key);
+      options.push(+chapter.$key);
       while (options.length < 4) {
         let choice = this.util.rng(book$.length);
         if (!options.includes(choice) && choice != 0) {
@@ -50,7 +50,7 @@ export class BibleService {
       return Observable.of({
         verse: chapter[randomVerseNumber],
         chapter: chapter.$key,
-        options: options
+        options: this.util.shuffleInPlace(options)
       });
     } else {
       console.log(`requesting ${bibleBook} from firebase`);
@@ -64,7 +64,7 @@ export class BibleService {
         while (chapter[randomVerseNumber] == null) {
           randomVerseNumber = this.util.rng(chapter.length - 1) + 1;
         }
-        options.push(chapter.$key);
+        options.push(+chapter.$key);
         while (options.length < 4) {
           let choice = this.util.rng(chapters.length);
           if (!options.includes(choice) && choice != 0) {
@@ -74,7 +74,7 @@ export class BibleService {
         return {
           verse: chapter[randomVerseNumber],
           chapter: chapter.$key,
-          options: options
+          options: this.util.shuffleInPlace(options)
         };
       });
     }

@@ -62,7 +62,7 @@ export class ChapterMcComponent implements OnInit {
     this.verseMetadata$.subscribe(metadata => {
       this.verse = metadata.verse;
       this.chapter = metadata.chapter;
-      this.options = metadata.options.sort(function() { return 0.5 - Math.random() });
+      this.options = metadata.options;
 ;
     });
     this.resetUI();
