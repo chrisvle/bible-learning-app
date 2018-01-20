@@ -45,7 +45,6 @@ export class BibleService {
   getRandomVerse(bibleBook: string): Observable<{verse: string, chapter: string}> {
     let book$, chapter, randomVerseNumber: number;
     if (this.localEsv[bibleBook]) {
-      console.log(`using local copy of ${bibleBook}`);
       book$ = this.localEsv[bibleBook];
       chapter = book$[this.util.rng(book$.length)];
       randomVerseNumber = this.util.rng(chapter.length - 1) + 1;
@@ -57,7 +56,6 @@ export class BibleService {
         chapter: chapter.$key
       });
     } else {
-      console.log(`requesting ${bibleBook} from firebase`);
       book$ = this.db.list(`esv/${bibleBook}`);
       book$.subscribe(book => {
         this.localEsv[bibleBook] = book;
