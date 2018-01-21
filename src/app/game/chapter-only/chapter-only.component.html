@@ -59,7 +59,7 @@
         <label class="mb-2"><strong>Here's a random verse from {{ book }}:</strong></label>
         <h5>{{ verse }}</h5>
       </div>
-      <div class="mb-3" *ngIf="nonAttemptsCorrect() && !noMoreAttempts">
+      <div class="mb-5" *ngIf="nonAttemptsCorrect() && !noMoreAttempts">
         <label class="mb-2" *ngIf="attemptOne == 0; else nonZeroAttemptNumber"><strong>What chapter is this verse found in?</strong></label>
         <ng-template #nonZeroAttemptNumber>
           <div class="mb-3">
@@ -85,6 +85,13 @@
           <button class="btn btn-success btn-block col-lg-4 col-md-8 col-sm-6"
             (click)="getRandomVerse()">
             Get Another Random Verse
+          </button>
+        </div>
+        <div *ngIf="lastVerseNumber !== verseNumber && showHelpButton && nonAttemptsCorrect() && !noMoreAttempts">
+          <label class="mb-1"><strong>Need help?</strong></label>
+          <button class="btn btn-secondary btn-block col-lg-4 col-md-8 col-sm-6"
+            (click)="getNextVerse()">
+            Get Next Verse
           </button>
         </div>
         <div *ngIf="noMoreAttempts">
