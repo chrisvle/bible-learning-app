@@ -96,6 +96,12 @@ export class BibleService {
   }
 
   getNextVerse(bibleBook: string, chapter: number, verseNumber: number) {
-    return this.localEsv[bibleBook][chapter - 1][verseNumber + 1];
+    let nextVerseNumber = verseNumber + 1;
+    let nextVerse = this.localEsv[bibleBook][chapter - 1][nextVerseNumber];
+    while (nextVerse === undefined) {
+      nextVerseNumber++;
+      nextVerse = this.localEsv[bibleBook][chapter - 1][nextVerseNumber];
+    }
+    return nextVerse;
   }
 }
