@@ -44,7 +44,7 @@ export class BibleService {
 
   getRandomVerse(bibleBook: string): Observable<{verse: string, chapter: string}> {
     let book$, chapter, randomVerseNumber: number;
-    let options = [];
+    const options = [];
     if (this.localEsv[bibleBook]) {
       book$ = this.localEsv[bibleBook];
       chapter = book$[this.util.rng(book$.length)];
@@ -54,14 +54,16 @@ export class BibleService {
       }
       options.push(+chapter.$key);
       while (options.length < 4) {
-        let choice = this.util.rng(book$.length);
-        if (!options.includes(choice) && choice != 0) {
+        const choice = this.util.rng(book$.length);
+        if (!options.includes(choice) && choice !== 0) {
           options.push(choice);
         }
       }
       return Observable.of({
         verse: chapter[randomVerseNumber],
         chapter: chapter.$key,
+        verseNumber: randomVerseNumber,
+        lastVerseNumber: chapter.length - 1,
         options: this.util.shuffleInPlace(options)
       });
     } else {
@@ -77,17 +79,29 @@ export class BibleService {
         }
         options.push(+chapter.$key);
         while (options.length < 4) {
-          let choice = this.util.rng(chapters.length);
-          if (!options.includes(choice) && choice != 0) {
+          const choice = this.util.rng(chapters.length);
+          if (!options.includes(choice) && choice !== 0) {
             options.push(choice);
           }
         }
         return {
           verse: chapter[randomVerseNumber],
           chapter: chapter.$key,
+          verseNumber: randomVerseNumber,
+          lastVerseNumber: chapter.length - 1,
           options: this.util.shuffleInPlace(options)
         };
       });
     }
+  }
+
+  getNextVerse(bibleBook: string, chapter: number, verseNumber: number) {
+    let nextVerseNumber = verseNumber + 1;
+    let nextVerse = this.localEsv[bibleBook][chapter - 1][nextVerseNumber];
+    while (nextVerse === undefined) {
+      nextVerseNumber++;
+      nextVerse = this.localEsv[bibleBook][chapter - 1][nextVerseNumber];
+    }
+    return nextVerse;
   }
 }

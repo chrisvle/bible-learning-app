@@ -11,10 +11,11 @@ import { AttemptStatuses } from '../../shared/enums/attempt-status.enum';
 export class ChapterOnlyComponent implements OnInit {
 
   book: string;
-  currentStreak = 0;
-  longestStreak = 0;
-  correctAnswers = 0;
-  totalQuestions = 0;
+  verseMetadata$: Observable<any>;
+  verse: string;
+  chapter: number;
+  verseNumber: number;
+  lastVerseNumber: number;
 
   @ViewChild('attempt') attemptElement: ElementRef;
   attemptOne = AttemptStatuses.Unused;
@@ -26,10 +27,13 @@ export class ChapterOnlyComponent implements OnInit {
   noMoreAttempts = false;
   showCorrectChapterAlert = false;
   showCorrectChapterButton = true;
+  showHelpButton = false;
 
-  verseMetadata$: Observable<any>;
-  verse: string;
-  chapter: string;
+  // Data
+  currentStreak = 0;
+  longestStreak = 0;
+  correctAnswers = 0;
+  totalQuestions = 0;
 
   constructor(private ar: ActivatedRoute, private router: Router, private bibleService: BibleService) {
     this.book = this.ar.snapshot.queryParams['book'];
@@ -38,6 +42,8 @@ export class ChapterOnlyComponent implements OnInit {
     this.verseMetadata$.subscribe(metadata => {
       this.verse = metadata.verse;
       this.chapter = metadata.chapter;
+      this.verseNumber = metadata.verseNumber;
+      this.lastVerseNumber = metadata.lastVerseNumber;
     });
   }
 
@@ -62,6 +68,7 @@ export class ChapterOnlyComponent implements OnInit {
     this.noMoreAttempts = false;
     this.showCorrectChapterAlert = false;
     this.showCorrectChapterButton = true;
+    this.showHelpButton = false;
     this.incorrectGuesses = [];
   }
 
@@ -70,8 +77,17 @@ export class ChapterOnlyComponent implements OnInit {
     this.verseMetadata$.subscribe(metadata => {
       this.verse = metadata.verse;
       this.chapter = metadata.chapter;
+      this.verseNumber = metadata.verseNumber;
+      this.lastVerseNumber = metadata.lastVerseNumber;
     });
     this.resetUI();
+  }
+
+  getNextVerse() {
+    const nextVerse = this.bibleService.getNextVerse(this.book, this.chapter, this.verseNumber);
+    this.verse += ` ${nextVerse}`;
+    this.verseNumber++;
+    this.showHelpButton = false;
   }
 
   nonAttemptsCorrect() {
@@ -84,7 +100,7 @@ export class ChapterOnlyComponent implements OnInit {
     if (this.attemptInput === '') {
       return;
     }
-    if (this.attemptInput === this.chapter) {
+    if (this.attemptInput === String(this.chapter)) {
       if (this.currentAttempt === 1) {
         this.attemptOne = AttemptStatuses.Correct;
       } else if (this.currentAttempt === 2) {
@@ -107,6 +123,7 @@ export class ChapterOnlyComponent implements OnInit {
       }
       this.incorrectGuesses.push(this.attemptInput);
       this.currentStreak = 0;
+      this.showHelpButton = true;
     }
     this.attemptInput = '';
     this.currentAttempt++;
