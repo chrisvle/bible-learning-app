@@ -19,14 +19,14 @@ export class ChapterMcComponent implements OnInit {
   correct: boolean;
   attempt: boolean;
 
-  attemptInput = '';
+  attemptInput = 0;
   showCorrectChapterAlert = false;
   showCorrectChapterButton = true;
 
   verseMetadata$: Observable<any>;
   verse: string;
-  chapter: string;
-  options: String[];
+  chapter: number;
+  options: number[];
 
   constructor(private ar: ActivatedRoute, private router: Router, private bibleService: BibleService) {
     this.correct = false;
@@ -54,14 +54,14 @@ export class ChapterMcComponent implements OnInit {
     this.showCorrectChapterButton = true;
     this.correct = false;
     this.attempt = false;
-    this.attemptInput = '';
+    this.attemptInput = 0;
   }
 
   getRandomVerse() {
     this.verseMetadata$ = this.bibleService.getRandomVerse(this.book);
     this.verseMetadata$.subscribe(metadata => {
       this.verse = metadata.verse;
-      this.chapter = metadata.chapter;
+      this.chapter = +metadata.chapter;
       this.options = metadata.options;
 ;
     });
@@ -69,9 +69,11 @@ export class ChapterMcComponent implements OnInit {
   }
 
   submit() {
+    console.log(typeof(this.attemptInput));
+    console.log(typeof(this.chapter));
     this.attempt = true;
-    if (this.attemptInput === '') {
-      this.attemptInput = this.options[0].toString();
+    if (this.attemptInput === 0) {
+      this.attemptInput = this.options[0];
     }
     if (this.attemptInput === this.chapter) {
       this.correct = true;
@@ -92,11 +94,7 @@ export class ChapterMcComponent implements OnInit {
     this.showCorrectChapterButton = false;
   }
 
-  selectChoice(choice: string) {
+  selectChoice(choice: number) {
     this.attemptInput = choice;
-  }
-
-  isChecked(choice: string) {
-    return this.attemptInput === choice;
   }
 }
