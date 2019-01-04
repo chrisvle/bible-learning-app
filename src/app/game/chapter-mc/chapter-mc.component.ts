@@ -12,12 +12,13 @@ import { NgForm } from '@angular/forms';
 export class ChapterMcComponent implements OnInit {
 
   book: string;
+  maxChapter: number = null;
   currentStreak = 0;
   longestStreak = 0;
   correctAnswers = 0;
   totalQuestions = 0;
-  correct: boolean;
-  attempt: boolean;
+  correct: boolean = false;
+  attempt: boolean = false;
 
   attemptInput = 0;
   showCorrectChapterAlert = false;
@@ -29,17 +30,27 @@ export class ChapterMcComponent implements OnInit {
   options: number[];
 
   constructor(private ar: ActivatedRoute, private router: Router, private bibleService: BibleService) {
-    this.correct = false;
-    this.attempt = false;
-    this.book = this.ar.snapshot.queryParams['book'];
-    this.router.navigateByUrl('/game/chapter-mc');
-    this.getRandomVerse();
   }
 
   ngOnInit() {
-    if (!this.book) {
-      this.router.navigateByUrl('/dashboard');
-    }
+    this.ar.queryParams.subscribe(params => {
+      if (params["book"]) {
+        if (params["maxChapter"]) {
+          this.maxChapter = params["maxChapter"];
+        }
+        this.book = params["book"];
+        this.bibleService.getRandomVerse(this.book, true, this.maxChapter)
+          .then((data: any) => {
+            console.log(data);
+            this.verse = data.verse;
+            this.chapter = data.chapter;
+            this.options = data.options;
+          });
+      }
+      else {
+        this.router.navigateByUrl('/dashboard');
+      }
+    });
   }
 
   resetGameStats() {
@@ -58,22 +69,17 @@ export class ChapterMcComponent implements OnInit {
   }
 
   getRandomVerse() {
-    this.bibleService.getRandomVerse(this.book)
+    this.bibleService.getRandomVerse(this.book, true, this.maxChapter)
       .then((data: any) => {
         console.log(data);
+          this.verse = data.verse;
+          this.chapter = data.chapter;
+          this.options = data.options;
+          this.resetUI();
       });
-    // this.verseMetadata$ = this.bibleService.getRandomVerse(this.book);
-    // this.verseMetadata$.subscribe(metadata => {
-    //   this.verse = metadata.verse;
-    //   this.chapter = +metadata.chapter;
-    //   this.options = metadata.options;
-    // });
-    this.resetUI();
   }
 
   submit() {
-    console.log(typeof(this.attemptInput));
-    console.log(typeof(this.chapter));
     this.attempt = true;
     if (this.attemptInput === 0) {
       this.attemptInput = this.options[0];

@@ -52,34 +52,27 @@ export class BibleService {
     });
   }
 
-  getRandomVerse(bibleBook: string, maxChapter?: number) {
-    let book$, chapter, randomVerseNumber: number;
-    const options = [];
+  getRandomVerse(bibleBook: string, mc: boolean, maxChapter?: number) {
+    let book$, chapter, randomVerseNumber, randomChapterNumber, max, correctChapter: number;
+    let options = [];
+    let data;
 
     // book is cached
     return new Promise(resolve => {
       if (this.localEsv[bibleBook]) {
         book$ = this.localEsv[bibleBook];
-        const max = maxChapter ? maxChapter : book$.length;
-        const randomChapterNumber = this.util.rng(max);
+        max = maxChapter ? maxChapter : book$.length;
+        randomChapterNumber = this.util.rng(max);
+        correctChapter = randomChapterNumber + 1;
         chapter = book$[randomChapterNumber];
         randomVerseNumber = this.util.rng(chapter.length - 1) + 1;
-        while (chapter[randomVerseNumber] == null) {
-          randomVerseNumber = this.util.rng(chapter.length - 1) + 1;
-        }
-        options.push(randomChapterNumber);
-        while (options.length < 4) {
-          const choice = this.util.rng(book$.length);
-          if (!options.includes(choice) && choice !== 0) {
-            options.push(choice);
-          }
-        }
-        const data = {
+        options = mc ? this.generateOptions(correctChapter, max) : options;
+        data = {
           verse: chapter[randomVerseNumber],
-          chapter: randomChapterNumber + 1,
+          chapter: correctChapter,
           verseNumber: randomVerseNumber,
           lastVerseNumber: chapter.length - 1,
-          options: this.util.shuffleInPlace(options)
+          options: options
         };
         resolve(data);
       } else {
@@ -87,20 +80,36 @@ export class BibleService {
         this.db.list(query).valueChanges()
           .subscribe((b: any) => {
             this.localEsv[bibleBook] = b;
-            const max = maxChapter ? maxChapter : b.length;
-            const randomChapterNumber = this.util.rng(max);
+            max = maxChapter ? maxChapter : b.length;
+            randomChapterNumber = this.util.rng(max);
+            correctChapter = randomChapterNumber + 1;
             chapter = b[randomChapterNumber];
             randomVerseNumber = this.util.rng(chapter.length - 1) + 1;
-            const data = {
+            options = mc? this.generateOptions(correctChapter, max): options;
+            data = {
               verse: chapter[randomVerseNumber],
-              chapter: randomChapterNumber + 1,
+              chapter: correctChapter,
               verseNumber: randomVerseNumber,
-              lastVerseNumber: chapter.length - 1
+              lastVerseNumber: chapter.length - 1, 
+              options: options
             };
             resolve(data);
         });
       }
     });
+  }
+
+  generateOptions(correct, max) {
+    const options = [];
+    options.push(correct);
+    while (options.length < 4) {
+      const choice = this.util.rng(max);
+      if (!options.includes(choice) && choice !== 0) {
+        options.push(choice);
+      }
+    }
+    this.util.shuffleInPlace(options)
+    return options;
   }
 
   getNextVerse(bibleBook: string, chapter: number, verseNumber: number) {

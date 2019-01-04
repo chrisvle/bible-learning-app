@@ -46,14 +46,16 @@ export class ChapterOnlyComponent implements OnInit {
           this.maxChapter = params["maxChapter"];
         }
         this.book = params["book"];
-        console.log(this.maxChapter);
-        this.bibleService.getRandomVerse(this.book, this.maxChapter)
+        this.bibleService.getRandomVerse(this.book, false, this.maxChapter)
           .then((data: any) => {
             this.verse = data.verse;
             this.chapter = data.chapter;
             this.verseNumber = data.verseNumber;
             this.lastVerseNumber = data.lastVerseNumber;
           });
+      }
+      else {
+        this.router.navigateByUrl('/dashboard');
       }
     });
   }
@@ -78,14 +80,13 @@ export class ChapterOnlyComponent implements OnInit {
   }
 
   getRandomVerse() {
-    this.bibleService.getRandomVerse(this.book, this.maxChapter)
+    this.bibleService.getRandomVerse(this.book, false, this.maxChapter)
       .then((data: any) => {
-        console.log(data);
-          this.verse = data.verse;
-          this.chapter = data.chapter;
-          this.verseNumber = data.verseNumber;
-          this.lastVerseNumber = data.lastVerseNumber;
-          this.resetUI();
+        this.verse = data.verse;
+        this.chapter = data.chapter;
+        this.verseNumber = data.verseNumber;
+        this.lastVerseNumber = data.lastVerseNumber;
+        this.resetUI();
       });
   }
 
