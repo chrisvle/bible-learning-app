@@ -82,12 +82,12 @@
         <h4>Old Testament Books</h4>
         <div class="right-content">
           <div class="row">
-              <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 mb-3" *ngFor="let book of (oldTestamentBooks$ | async)">
+              <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 mb-3" *ngFor="let book of otBooks">
                 <div class="card small-card">
                   <div class="d-flex flex-column card-block">
                     <h6 class="card-title">{{book.name}}</h6>
                     <button class="btn btn-primary btn-sm mt-auto" id="{{book.name}}SelectButton"
-                      (click)="bibleBook = book.name">
+                      (click)="setBook(book)">
                       Select
                     </button>
                   </div>
@@ -101,19 +101,28 @@
         <h4>New Testament Books</h4>
         <div class="right-content">
           <div class="row">
-            <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 mb-3" *ngFor="let book of (newTestamentBooks$ | async)">
+            <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 mb-3" *ngFor="let book of ntBooks">
               <div class="card small-card">
                 <div class="d-flex flex-column card-block">
                   <h6 class="card-title">{{book.name}}</h6>
-                  <button class="btn btn-primary btn-sm mt-auto" (click)="bibleBook = book.name">Select</button>
+                  <button class="btn btn-primary btn-sm mt-auto" (click)="setBook(book)">Select</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <!-- Chapters -->
+      <div *ngIf="bibleBook && !maxChapter">
+        <div class="jumbotron">
+          <h3 class="my-5">Please choose the max chapter for this book.</h3>
+          <select [(ngModel)]="maxChapter" name="chapters" id="">
+            <option *ngFor="let c of bookChapters; let i = index">{{ i }}</option>
+          </select>
+        </div>
+      </div>
       <!-- Confirmation -->
-      <div *ngIf="bibleBook">
+      <div *ngIf="maxChapter">
         <div class="jumbotron">
           <h3 class="my-5">Please double check your game settings to make sure they are correct.</h3>
           <h4 class="mb-4">If they are correct, then: </h4>

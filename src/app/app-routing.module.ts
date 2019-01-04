@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MainComponent } from './main/main.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './shared/guards/auth.guard';
+import { GameModule } from './game/game.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { LoginModule } from './login/login.module';
 
 const routes: Routes = [
   {
     path: 'login',
-    loadChildren: 'app/login/login.module#LoginModule'
+    loadChildren: () => LoginModule
   },
   {
     path: '',
@@ -16,11 +18,11 @@ const routes: Routes = [
     children: [
       {
         path: 'game',
-        loadChildren: 'app/game/game.module#GameModule'
+        loadChildren: () => GameModule
       },
       {
         path: 'dashboard',
-        loadChildren: 'app/dashboard/dashboard.module#DashboardModule'
+        loadChildren: () => DashboardModule
       },
       {
         path: '',

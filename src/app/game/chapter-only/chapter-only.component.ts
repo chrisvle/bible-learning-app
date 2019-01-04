@@ -11,6 +11,7 @@ import { AttemptStatuses } from '../../shared/enums/attempt-status.enum';
 export class ChapterOnlyComponent implements OnInit {
 
   book: string;
+  maxChapter: number = null;
   verseMetadata$: Observable<any>;
   verse: string;
   chapter: number;
@@ -36,21 +37,25 @@ export class ChapterOnlyComponent implements OnInit {
   totalQuestions = 0;
 
   constructor(private ar: ActivatedRoute, private router: Router, private bibleService: BibleService) {
-    this.book = this.ar.snapshot.queryParams['book'];
-    this.router.navigateByUrl('/game/chapter-only');
-    this.verseMetadata$ = this.bibleService.getRandomVerse(this.book);
-    this.verseMetadata$.subscribe(metadata => {
-      this.verse = metadata.verse;
-      this.chapter = metadata.chapter;
-      this.verseNumber = metadata.verseNumber;
-      this.lastVerseNumber = metadata.lastVerseNumber;
-    });
   }
 
   ngOnInit() {
-    if (!this.book) {
-      this.router.navigateByUrl('/dashboard');
-    }
+    this.ar.queryParams.subscribe(params => {
+      if (params["book"]) {
+        if (params["maxChapter"]) {
+          this.maxChapter = params["maxChapter"];
+        }
+        this.book = params["book"];
+        console.log(this.maxChapter);
+        this.bibleService.getRandomVerse(this.book, this.maxChapter)
+          .then((data: any) => {
+            this.verse = data.verse;
+            this.chapter = data.chapter;
+            this.verseNumber = data.verseNumber;
+            this.lastVerseNumber = data.lastVerseNumber;
+          });
+      }
+    });
   }
 
   resetGameStats() {
@@ -73,14 +78,15 @@ export class ChapterOnlyComponent implements OnInit {
   }
 
   getRandomVerse() {
-    this.verseMetadata$ = this.bibleService.getRandomVerse(this.book);
-    this.verseMetadata$.subscribe(metadata => {
-      this.verse = metadata.verse;
-      this.chapter = metadata.chapter;
-      this.verseNumber = metadata.verseNumber;
-      this.lastVerseNumber = metadata.lastVerseNumber;
-    });
-    this.resetUI();
+    this.bibleService.getRandomVerse(this.book, this.maxChapter)
+      .then((data: any) => {
+        console.log(data);
+          this.verse = data.verse;
+          this.chapter = data.chapter;
+          this.verseNumber = data.verseNumber;
+          this.lastVerseNumber = data.lastVerseNumber;
+          this.resetUI();
+      });
   }
 
   getNextVerse() {

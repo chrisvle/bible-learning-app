@@ -1,98 +1,106 @@
 import { Injectable } from '@angular/core';
 import { Testaments } from '../enums/testaments.enum';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { BibleBook } from '../models/bible-book.model';
 import { Utility } from '../utility';
-import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs';
 import 'rxjs/add/observable/of';
 
 @Injectable()
 export class BibleService {
 
-  private bibleBooks$: FirebaseListObservable<BibleBook[]>;
+  private bibleBooks$;
+  private ot: Array<BibleBook>;
+  private nt: Array<BibleBook>;
   private localEsv = {};
 
   constructor(private db: AngularFireDatabase, private util: Utility) {
     this.bibleBooks$ = this.db.list('bible-books');
+    this.ot = null;
+    this.nt = null;
   }
 
-  /*
-   * Options Object: {}
-   * filter out one-chapter books - filterOutOneChapterBooks: true
-   */
-  getOldTestamentBooks(options?): Observable<BibleBook[]> {
-    return this.bibleBooks$.map(books => {
-      if (options.filterOutOneChapterBooks) {
-        return books.filter(book => book.testament === Testaments.Old
-          && book.chapters !== 1);
+  getBibleBooks() {
+    return this.bibleBooks$;
+  }
+
+  getOT() {
+    return new Promise<Array<BibleBook>>(resolve => {
+      if (this.ot) {
+        resolve(this.ot);
       } else {
-        return books.filter(book => book.testament === Testaments.Old);
+        this.bibleBooks$.valueChanges()
+          .subscribe(books => {
+            this.ot = books.filter((b: BibleBook) => b.testament==Testaments.Old && b.chapters > 1);
+            resolve(this.ot);
+          });
       }
     });
   }
 
-  getNewTestamentBooks(options?): Observable<BibleBook[]> {
-    return this.bibleBooks$.map(books => {
-      if (options.filterOutOneChapterBooks) {
-        return books.filter(book => book.testament === Testaments.New
-          && book.chapters !== 1);
+  getNT() {
+    return new Promise<Array<BibleBook>>(resolve => {
+      if (this.nt) {
+        resolve(this.nt);
       } else {
-        return books.filter(book => book.testament === Testaments.New);
+        this.bibleBooks$.valueChanges()
+          .subscribe(books => {
+            this.nt = books.filter((b: BibleBook) => b.testament==Testaments.New && b.chapters > 1);
+            resolve(this.nt);
+          });
       }
     });
   }
 
-  getRandomVerse(bibleBook: string): Observable<{verse: string, chapter: string}> {
+  getRandomVerse(bibleBook: string, maxChapter?: number) {
     let book$, chapter, randomVerseNumber: number;
     const options = [];
-    if (this.localEsv[bibleBook]) {
-      book$ = this.localEsv[bibleBook];
-      chapter = book$[this.util.rng(book$.length)];
-      randomVerseNumber = this.util.rng(chapter.length - 1) + 1;
-      while (chapter[randomVerseNumber] == null) {
-        randomVerseNumber = this.util.rng(chapter.length - 1) + 1;
-      }
-      options.push(+chapter.$key);
-      while (options.length < 4) {
-        const choice = this.util.rng(book$.length);
-        if (!options.includes(choice) && choice !== 0) {
-          options.push(choice);
-        }
-      }
-      return Observable.of({
-        verse: chapter[randomVerseNumber],
-        chapter: chapter.$key,
-        verseNumber: randomVerseNumber,
-        lastVerseNumber: chapter.length - 1,
-        options: this.util.shuffleInPlace(options)
-      });
-    } else {
-      book$ = this.db.list(`esv/${bibleBook}`);
-      book$.subscribe(book => {
-        this.localEsv[bibleBook] = book;
-      });
-      return book$.map(chapters => {
-        chapter = chapters[this.util.rng(chapters.length)];
+
+    // book is cached
+    return new Promise(resolve => {
+      if (this.localEsv[bibleBook]) {
+        book$ = this.localEsv[bibleBook];
+        const max = maxChapter ? maxChapter : book$.length;
+        const randomChapterNumber = this.util.rng(max);
+        chapter = book$[randomChapterNumber];
         randomVerseNumber = this.util.rng(chapter.length - 1) + 1;
         while (chapter[randomVerseNumber] == null) {
           randomVerseNumber = this.util.rng(chapter.length - 1) + 1;
         }
-        options.push(+chapter.$key);
+        options.push(randomChapterNumber);
         while (options.length < 4) {
-          const choice = this.util.rng(chapters.length);
+          const choice = this.util.rng(book$.length);
           if (!options.includes(choice) && choice !== 0) {
             options.push(choice);
           }
         }
-        return {
+        const data = {
           verse: chapter[randomVerseNumber],
-          chapter: chapter.$key,
+          chapter: randomChapterNumber + 1,
           verseNumber: randomVerseNumber,
           lastVerseNumber: chapter.length - 1,
           options: this.util.shuffleInPlace(options)
         };
-      });
-    }
+        resolve(data);
+      } else {
+        const query = "esv/" + bibleBook;
+        this.db.list(query).valueChanges()
+          .subscribe((b: any) => {
+            this.localEsv[bibleBook] = b;
+            const max = maxChapter ? maxChapter : b.length;
+            const randomChapterNumber = this.util.rng(max);
+            chapter = b[randomChapterNumber];
+            randomVerseNumber = this.util.rng(chapter.length - 1) + 1;
+            const data = {
+              verse: chapter[randomVerseNumber],
+              chapter: randomChapterNumber + 1,
+              verseNumber: randomVerseNumber,
+              lastVerseNumber: chapter.length - 1
+            };
+            resolve(data);
+        });
+      }
+    });
   }
 
   getNextVerse(bibleBook: string, chapter: number, verseNumber: number) {

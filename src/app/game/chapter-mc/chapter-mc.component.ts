@@ -58,13 +58,16 @@ export class ChapterMcComponent implements OnInit {
   }
 
   getRandomVerse() {
-    this.verseMetadata$ = this.bibleService.getRandomVerse(this.book);
-    this.verseMetadata$.subscribe(metadata => {
-      this.verse = metadata.verse;
-      this.chapter = +metadata.chapter;
-      this.options = metadata.options;
-;
-    });
+    this.bibleService.getRandomVerse(this.book)
+      .then((data: any) => {
+        console.log(data);
+      });
+    // this.verseMetadata$ = this.bibleService.getRandomVerse(this.book);
+    // this.verseMetadata$.subscribe(metadata => {
+    //   this.verse = metadata.verse;
+    //   this.chapter = +metadata.chapter;
+    //   this.options = metadata.options;
+    // });
     this.resetUI();
   }
 
